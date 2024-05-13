@@ -1,5 +1,10 @@
 # Revision history for libBF-hs
 
+## next -- ????.??.??
+
+* Fix a bug which could cause incorrect behavior (e.g., infinite loops) on
+  32-bit architectures.
+
 ## 0.6.7 -- 2023.11.28
 
 * Add `Data` instances for `BigFloat`, `Sign`, `BFRep`, and `BFNum`.
