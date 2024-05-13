@@ -602,7 +602,7 @@ toRep :: BF -> IO BFRep
 toRep = bf1 (\ptr ->
   do s <- #{peek bf_t, sign} ptr
      let sgn = if asBool s then Neg else Pos
-     e <- #{peek bf_t, expn} ptr
+     e <- #{peek bf_t, expn} ptr :: IO SLimbT
      if | e == #{const BF_EXP_NAN}  -> pure BFNaN
         | e == #{const BF_EXP_INF}  -> pure (BFRep sgn Inf)
         | e == #{const BF_EXP_ZERO} -> pure (BFRep sgn Zero)
@@ -618,9 +618,17 @@ toRep = bf1 (\ptr ->
 
            base <- foldM step 0 (reverse (take len [ 0 .. ]))
            let bias = 64 * fromIntegral len
+
+               -- `e :: SLimbT`, and we need it to be 64 bits in the code below.
+               -- On 64-bit architectures, `SLimbT = Int64`, making this a
+               -- no-op. On 32-bit architectures, `SLimbT = Int32`, so this code
+               -- will extend `e` to 64 bits.
+               eInt64 :: Int64
+               eInt64 = fromIntegral e
+
                norm bs bi
                  | even bs    = norm (bs `shiftR` 1) (bi - 1)
-                 | otherwise  = BFRep sgn (Num bs (e - bi))
+                 | otherwise  = BFRep sgn (Num bs (eInt64 - bi))
 
            pure (norm base bias) -- (BFRep sgn (Num base (e - bias)))
   )
