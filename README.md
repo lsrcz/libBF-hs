@@ -17,8 +17,9 @@ against your operating system's version of LibBF.
 The most recent release on the [LibBF website](https://bellard.org/libbf/)
 dates back to 2020, which does not support non-x86 architectures (e.g.,
 AArch64). For this reason, we instead bundle a more recent of LibBF (written in
-2021) that is bundled with the [`quickjs`](https://bellard.org/libbf/) library.
-We may also choose to backport other critical bugfixes if they are needed.
+2021) that is bundled with the [`quickjs`](https://github.com/bellard/quickjs)
+library. We may also choose to backport other critical bugfixes if they are
+needed.
 
 ## Limitations
 
