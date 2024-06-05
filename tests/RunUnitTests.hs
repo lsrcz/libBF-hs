@@ -34,6 +34,18 @@ main =
     , testGroup "bfIsSubnormal (float32 NearEven)"
         (map (\bf -> bfSubnormalTestCase bf False)
              [bfPosZero, bfFromInt 1, bfFromInt 0, bfNaN, bfNegInf, bfPosInf])
+    , testGroup "IEEE 754 compare"
+      [ testGroup "Comparisons with NaN should always return False"
+        [ testCase "NaN > 0" $ False @=? bfNaN > bfPosZero
+        , testCase "0 > NaN" $ False @=? bfPosZero > bfNaN
+        , testCase "NaN >= 0" $ False @=? bfNaN >= bfPosZero
+        , testCase "0 >= NaN" $ False @=? bfPosZero >= bfNaN
+        , testCase "NaN < 0" $ False @=? bfNaN < bfPosZero
+        , testCase "0 < NaN" $ False @=? bfPosZero < bfNaN
+        , testCase "NaN <= 0" $ False @=? bfNaN <= bfPosZero
+        , testCase "0 <= NaN" $ False @=? bfPosZero <= bfNaN
+        ]
+      ]
     ]
 
 statusUnderflow :: Status -> Bool
