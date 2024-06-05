@@ -158,6 +158,8 @@ instance Eq BigFloat where
 instance Ord BigFloat where
   BigFloat x < BigFloat y  = unsafe (cmpLT x y)
   BigFloat x <= BigFloat y = unsafe (cmpLEQ x y)
+  BigFloat x > BigFloat y  = unsafe (cmpLT y x)
+  BigFloat x >= BigFloat y  = unsafe (cmpLEQ y x)
 
 
 instance Hashable BigFloat where
